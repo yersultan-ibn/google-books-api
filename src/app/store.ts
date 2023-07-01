@@ -1,44 +1,23 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { configureStore, createStore } from "@reduxjs/toolkit";
+import { rootReducer } from "./rootReducer";
 
-import { configureStore } from "@reduxjs/toolkit";
-import booksSlice from "../features/books/booksSlice";
-import {
-  fetchBooksByAuthor,
-  fetchBooksByKeywords,
-  fetchBooksByTitle,
-} from "../features/books/booksAPI";
+import * as api from "../features/books/booksAPI";
+import axios from "axios";
+import { booksReducer } from "../features/books/booksSlice";
 
-// Создание асинхронных санок с использованием createAsyncThunk
-export const searchBooksByAuthor = createAsyncThunk(
-  "books/searchByAuthor",
-  async (author: string) => {
-    const response = await fetchBooksByAuthor(author);
-    return response;
-  }
-);
-
-export const searchBooksByKeywords = createAsyncThunk(
-  "books/searchByKeywords",
-  async (keywords: string) => {
-    const response = await fetchBooksByKeywords(keywords);
-    return response;
-  }
-);
-
-export const searchBooksByTitle = createAsyncThunk(
-  "books/searchByTitle",
-  async (title: string) => {
-    const response = await fetchBooksByTitle(title);
-    return response;
-  }
-);
-
-// Создание хранилища
-const store = configureStore({
+export const store = configureStore({
   reducer: {
-    books: booksSlice,
+    booksArr: booksReducer,
   },
+  devTools: true,
+  middleware: (getDefaultMiddlware) =>
+    getDefaultMiddlware({
+      thunk: {
+        extraArgument: {
+          client: axios,
+          api,
+        },
+      },
+      serializableCheck: false,
+    }),
 });
-
-export type RootState = ReturnType<typeof store.getState>;
-export default store;

@@ -1,41 +1,36 @@
-const API_BASE_URL = "https://www.googleapis.com/books/v1/";
-const API_KEY = "AIzaSyCddxCM4fSUQVeJ9-8xNjQkVHjcE3SLsqI"; // Замените на ваш реальный API-ключ
+export const API_BASE_URL = "https://www.googleapis.com/books/v1/volumes?";
+export const API_KEY = "AIzaSyCddxCM4fSUQVeJ9-8xNjQkVHjcE3SLsqI"; // Замените на ваш реальный API-ключ
 
-// Функция для отправки запроса на API и получения ответа
-const fetchData = async (url: string) => {
-  try {
-    const response = await fetch(url);
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    } else {
-      throw new Error("Request failed");
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const ALL_BOOKS =
+  "https://www.googleapis.com/books/v1/volumes?q=javascript:keyes&key=AIzaSyCddxCM4fSUQVeJ9-8xNjQkVHjcE3SLsqI";
 
-// Функция для поиска книг по автору
-export const fetchBooksByAuthor = async (author: string) => {
-  const url = `${API_BASE_URL}/volumes?q=inauthor:${encodeURIComponent(
-    author
-  )}&key=${API_KEY}`;
-  return fetchData(url);
-};
+// export const fetchGet = async () => {
+//   const response = await fetch(
+//     "https://www.googleapis.com/books/v1/volumes?q=intitle:your+harry+query&key=AIzaSyCddxCM4fSUQVeJ9-8xNjQkVHjcE3SLsqI"
+//   );
+//   const data = await response.json();
+//   return data;
+// };
 
-// Функция для поиска книг по ключевым словам
-export const fetchBooksByKeywords = async (keywords: string) => {
-  const url = `${API_BASE_URL}/volumes?q=${encodeURIComponent(
-    keywords
-  )}&key=${API_KEY}`;
-  return fetchData(url);
-};
+// const fetchData = async (url: string) => {
+//   const response = await fetch(url);
 
-// Функция для поиска книг по названию
-export const fetchBooksByTitle = async (title: string) => {
-  const url = `${API_BASE_URL}/volumes?q=intitle:${encodeURIComponent(
-    title
-  )}&key=${API_KEY}`;
-  return fetchData(url);
-};
+//   if (!response.ok) {
+//     throw new Error(`Not fetch url: ${url}, status: ${response.status} `);
+//   }
+
+//   const data = response.json();
+//   return data;
+// };
+
+// const searchBooks = async (termSearch: any) => {
+//   // q=intitle:your+harry+query&
+//   const url = `${API_BASE_URL}q=${termSearch}${API_KEY}`;
+//   try {
+//     const books = await fetchData(url);
+//     console.log("books searchBooks", books);
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+// export { searchBooks };
