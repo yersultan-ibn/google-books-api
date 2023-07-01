@@ -11,7 +11,7 @@ import {
 import notFoundImage from "../../images/not-found.jpg";
 
 export const Book = ({ title, imageLinks, authors, categories }: any) => {
-  console.log("BOOKIMAGELINK", imageLinks?.thumbnail);
+  console.log("BOOKIMAGELINK");
   return (
     <Card sx={{ maxWidth: 345 }} className="book-card">
       <Box

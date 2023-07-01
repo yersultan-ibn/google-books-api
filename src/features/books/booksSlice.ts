@@ -9,10 +9,10 @@ import { ALL_BOOKS, API_BASE_URL, API_KEY } from "./booksAPI";
 // );
 export const searchBooks = createAsyncThunk(
   "@@books/search-books",
-  async (searchQuery, { extra: { client } }) => {
-    const url = `${API_BASE_URL}q=${encodeURIComponent(
+  async (searchQuery: string, { extra: { client } }: any) => {
+    const url = await `${API_BASE_URL}q=${encodeURIComponent(
       searchQuery
-    )}&key=${API_KEY}`;
+    )}:keyes&key=${API_KEY}`;
     const response = await client.get(url);
     return response.data.items;
   }
@@ -95,7 +95,13 @@ export const selectBooksList = (state: any) => {
 };
 
 export const selectAllBooks = (state: any) => state.books.list;
-export const selectSearchQuery = (state: any) => state.books.list;
+export const selectSearchQuery = (state: any) => {
+  if (state.books && state.books.list) {
+    return state.books.list;
+  } else {
+    return ""; // или другое значение по умолчанию
+  }
+};
 
 // export const searchBooksLoading = (state: any) => state.books.status;
 export const searchBooksRejected = (state: any) => state.books.error;

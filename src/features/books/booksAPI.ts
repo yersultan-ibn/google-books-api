@@ -3,6 +3,8 @@ export const API_KEY = "AIzaSyCddxCM4fSUQVeJ9-8xNjQkVHjcE3SLsqI"; // Замен�
 
 export const ALL_BOOKS =
   "https://www.googleapis.com/books/v1/volumes?q=javascript:keyes&key=AIzaSyCddxCM4fSUQVeJ9-8xNjQkVHjcE3SLsqI";
+  // https://www.googleapis.com/books/v1/volumes?q=javascript:keyes&key=AIzaSyCddxCM4fSUQVeJ9-8xNjQkVHjcE3SLsqI
+  // https://www.googleapis.com/books/v1/volumes?jskeyes&key=AIzaSyCddxCM4fSUQVeJ9-8xNjQkVHjcE3SLsqI
 
 // export const fetchGet = async () => {
 //   const response = await fetch(
