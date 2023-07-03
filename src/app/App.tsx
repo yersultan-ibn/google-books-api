@@ -1,14 +1,18 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { Header } from "../features/books/Header";
-import { BooksList } from "../features/books/BooksList";
+import { Header } from "../features/Header";
+import { BooksList } from "../pages/BooksList";
+import { BrowserRouter } from "react-router-dom";
+import { BooksPage } from "../pages/BookPage";
 
 function App() {
   return (
     <>
-      <Header />
-      <BooksList />
+      <BrowserRouter>
+        <Header />
+        <BooksPage />
+      </BrowserRouter>
     </>
   );
 }

@@ -1,45 +1,49 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ALL_BOOKS, API_BASE_URL, API_KEY } from "./booksAPI";
+import { API_BASE_URL, API_KEY, BOOKS_DETAILS, BOOKS_SORT } from "./booksAPI";
 
-// export const loadBooks: any = createAsyncThunk(
-//   "@@books/load-books",
-//   async (_, { extra: { client, api } }: any) => {
-//     return client.get(api.ALL_BOOKS);
-//   }
-// );
 export const searchBooks = createAsyncThunk(
   "@@books/search-books",
   async (searchQuery: string, { extra: { client } }: any) => {
-    const url = await `${API_BASE_URL}q=${encodeURIComponent(
+    let url = `${API_BASE_URL}q=${encodeURIComponent(
       searchQuery
-    )}:keyes&key=${API_KEY}`;
+    )}&key=${API_KEY}`;
+
     const response = await client.get(url);
     return response.data.items;
   }
 );
-// export const loadBooks = createAsyncThunk(
-//   "@@books/load-books",
-//   async (searchQuery: any, { extra: { client } }: any) => {
-//     const url = `${API_BASE_URL}q=${encodeURIComponent(
-//       searchQuery
-//     )}&key=${API_KEY}`;
-//     return client.get(url);
-//   }
-// );
+
+export const loadBooksDetails = createAsyncThunk(
+  "@@books/load-books-details",
+  async (id: any, { extra: { client } }: any) => {
+    const url = BOOKS_DETAILS(id);
+    const response = await client.get(url);
+    return response.data;
+  }
+);
+
+export const sortBooks = createAsyncThunk(
+  "@@books/sort-books",
+  async (sort: any, { extra: { client } }: any) => {
+    const url = BOOKS_SORT(sort);
+    const response = await client.get(url);
+    return response.data;
+  }
+);
 
 interface BooksState {
   status: boolean | string;
   error: boolean | string | null;
   list: [];
+  selectedBook: [];
 }
-// interface Book {
-//   id: number;
-// }
 
 const initialState: any = {
   status: "idle",
   error: null,
-  list: [],
+  list: "",
+  selectedBook: [],
+  sortBooks: "",
 };
 
 export const booksSlice = createSlice({
@@ -48,17 +52,6 @@ export const booksSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // .addCase(loadBooks.pending, (state) => {
-      //   state.status = "loading";
-      // })
-      // .addCase(loadBooks.rejected, (state) => {
-      //   state.status = "rejected";
-      //   state.error = true;
-      // })
-      // .addCase(loadBooks.fulfilled, (state, action) => {
-      //   state.list = action.payload;
-      //   state.status = "received";
-      // })
       .addCase(searchBooks.pending, (state) => {
         state.status = "loading";
       })
@@ -69,6 +62,21 @@ export const booksSlice = createSlice({
       .addCase(searchBooks.fulfilled, (state, action) => {
         state.list = action.payload;
         state.status = "received";
+      })
+      .addCase(loadBooksDetails.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(loadBooksDetails.rejected, (state) => {
+        state.status = "rejected";
+        state.error = true;
+      })
+      .addCase(loadBooksDetails.fulfilled, (state, action) => {
+        state.selectedBook = action.payload;
+        state.status = "received";
+      })
+      .addCase(sortBooks.fulfilled, (state, action) => {
+        state.selectedBook = action.payload;
+        state.status = "received";
       });
   },
 });
@@ -76,9 +84,6 @@ export const booksReducer = booksSlice.reducer;
 
 // selectors
 export const selectBooksList = (state: any) => {
-  // status: state.books.status,
-  // error: state.books.error,
-  // qty: state.books.list.length,
   if (state.books) {
     return {
       status: state.books.status,
@@ -95,6 +100,8 @@ export const selectBooksList = (state: any) => {
 };
 
 export const selectAllBooks = (state: any) => state.books.list;
+export const sortAllBooks = (state: any) => state.books.sortBooks;
+console.log(selectAllBooks);
 export const selectSearchQuery = (state: any) => {
   if (state.books && state.books.list) {
     return state.books.list;
@@ -103,5 +110,11 @@ export const selectSearchQuery = (state: any) => {
   }
 };
 
-// export const searchBooksLoading = (state: any) => state.books.status;
 export const searchBooksRejected = (state: any) => state.books.error;
+export const selectedBookDetails = (state: any) => {
+  if (state.books && state.books.selectedBook) {
+    return state.books.selectedBook;
+  } else {
+    return null; // or any other default value
+  }
+};

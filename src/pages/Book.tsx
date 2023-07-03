@@ -7,11 +7,12 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
-import notFoundImage from "../../images/not-found.jpg";
+import notFoundImage from "../images/not-found.jpg";
 
-export const Book = ({ title, imageLinks, authors, categories }: any) => {
-  console.log("BOOKIMAGELINK");
+export const Book = ({ title, imageLinks, authors, categories, id }: any) => {
+  // console.log("iddddddd", id);
   return (
     <Card sx={{ maxWidth: 345 }} className="book-card">
       <Box
@@ -40,8 +41,10 @@ export const Book = ({ title, imageLinks, authors, categories }: any) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+        <Link to={`/books/${id}`}>
+          <Button size="small">Share</Button>
+        </Link>
+        {/* <Button size="small">Learn More</Button> */}
       </CardActions>
     </Card>
   );
